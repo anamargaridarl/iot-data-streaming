@@ -2,4 +2,4 @@
 
 IOT Data Streaming flow
 
-![Data Flow](image.png)
+![Data Flow](diagram.png)
