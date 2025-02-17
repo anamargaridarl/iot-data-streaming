@@ -1,13 +1,20 @@
 services:
   nanomq:
-    build:
-      dockerfile: ./Dockerfile
+    image: emqx/nanomq:0.22.9-full
     ports:
       - "1883:1883"
       - "9083:9083"
       - "8883:8883"
     environment:
       NANOMQ_WEBSOCKET_URL: nmq-tcp://0.0.0.0:9083
+      # NANOMQ_TLS_ENABLE: "true"
+      # NANOMQ_TLS_CA_CERT_PATH: /etc/certs/ca.pem
+      # NANOMQ_TLS_CERT_PATH: /etc/certs/server.pem
+      # NANOMQ_TLS_KEY_PATH: /etc/certs/server.key
+      # NANOMQ_TLS_URL: tls+nmq-tcp://0.0.0.0:8883
+    volumes:
+      - ./config/nanomq.conf:/etc/nanomq.conf
+      - ./config/certs/:/etc/certs/
   kafbat-ui:
     container_name: kafbat-ui
     image: ghcr.io/kafbat/kafka-ui:273e64cd1b7096769fad294918017a4db13a1fb4
