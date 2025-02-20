@@ -1,0 +1,27 @@
+[ req ]
+default_bits       = 2048
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+x509_extensions    = v3_ext
+prompt             = no
+
+[ req_distinguished_name ]
+CN = 10.0.2.2  # Android emulator sees the host machine as 10.0.2.2
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ v3_ext ]
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, keyEncipherment
+extendedKeyUsage=serverAuth
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = infra-nanomq-1        # Allow local testing
+DNS.2 = localhost
+IP.1  = 10.0.2.2            # Android emulator accesses host via 10.0.2.2
+IP.2  = 127.0.0.1           # Localhost
+IP.3  = 0.0.0.0             # Bind to all interfaces
+IP.4  = 192.168.1.100       # (Optional) If you access from LAN, replace with your local network IP

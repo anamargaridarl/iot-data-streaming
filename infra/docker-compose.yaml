@@ -7,14 +7,12 @@ services:
       - "8883:8883"
     environment:
       NANOMQ_WEBSOCKET_URL: nmq-tcp://0.0.0.0:9083
-      # NANOMQ_TLS_ENABLE: "true"
-      # NANOMQ_TLS_CA_CERT_PATH: /etc/certs/ca.pem
-      # NANOMQ_TLS_CERT_PATH: /etc/certs/server.pem
-      # NANOMQ_TLS_KEY_PATH: /etc/certs/server.key
-      # NANOMQ_TLS_URL: tls+nmq-tcp://0.0.0.0:8883
     volumes:
       - ./config/nanomq.conf:/etc/nanomq.conf
       - ./config/certs/:/etc/certs/
+    command: nanomq start --conf /etc/nanomq.conf 
+    # --cacert /etc/certs/ca.crt --cert /etc/certs/server.crt --key /etc/certs/server.key
+
   kafbat-ui:
     container_name: kafbat-ui
     image: ghcr.io/kafbat/kafka-ui:273e64cd1b7096769fad294918017a4db13a1fb4
@@ -53,7 +51,7 @@ services:
       - "9999:9999"
     environment:
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka1:19092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:SSL,DOCKER:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_ZOOKEEPER_CONNECT: "zoo1:2181"
       KAFKA_BROKER_ID: 1
@@ -67,7 +65,6 @@ services:
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
     depends_on:
       - zoo1
-  
   schemaregistry0:
     image: confluentinc/cp-schema-registry:7.2.1
     ports:
@@ -85,7 +82,9 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_TOPIC: _schemas
 
   kafka-connect0:
-    image: confluentinc/cp-kafka-connect:7.2.1
+    build:
+      dockerfile: ./kafka/Dockerfile
+    # image: confluentinc/cp-kafka-connect:7.2.1
     ports:
       - 8083:8083
     depends_on:
@@ -112,3 +111,4 @@ services:
       CONFLUENT_LICENSE_MODE: NONE
     volumes:
       - "./connectors:/usr/share/confluent-hub-components"
+      - "./config/certs/ca-cert.crt:/certs/ca.crt"
