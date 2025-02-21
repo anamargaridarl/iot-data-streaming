@@ -16,6 +16,7 @@ services:
   kafbat-ui:
     container_name: kafbat-ui
     image: ghcr.io/kafbat/kafka-ui:273e64cd1b7096769fad294918017a4db13a1fb4
+    user: root
     ports:
       - 8080:8080
     depends_on:
@@ -25,11 +26,12 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka1:29092
-      KAFKA_CLUSTERS_0_METRICS_PORT: 9997
       KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schemaregistry0:8085
       KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: kafka-connect0
       KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: http://kafka-connect0:8083
       DYNAMIC_CONFIG_ENABLED: true # not necessary for sasl auth, added for tests
+    volumes:
+      - "./config/certs/ca-cert.crt:/certs/ca.crt"
   zoo1:
     image: confluentinc/cp-zookeeper:7.3.2
     hostname: zoo1
