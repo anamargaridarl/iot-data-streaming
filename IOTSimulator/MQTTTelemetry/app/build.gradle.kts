@@ -60,4 +60,5 @@ dependencies {
     implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.2")
     implementation("org.eclipse.paho:org.eclipse.paho.android.service:1.1.1")
     implementation("com.github.avro-kotlin.avro4k:avro4k-core:2.0.0")
+    implementation("org.bouncycastle:bcprov-jdk15on:1.64")
 }

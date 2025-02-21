@@ -32,6 +32,8 @@ services:
       DYNAMIC_CONFIG_ENABLED: true # not necessary for sasl auth, added for tests
     volumes:
       - "./config/certs/ca-cert.crt:/certs/ca.crt"
+      # on start run: keytool -import -trustcacerts -cacerts -storepass changeit -noprompt -alias meias -file /certs/ca.crt
+      # todo: understand if cert is needed here
   zoo1:
     image: confluentinc/cp-zookeeper:7.3.2
     hostname: zoo1
@@ -114,3 +116,4 @@ services:
     volumes:
       - "./connectors:/usr/share/confluent-hub-components"
       - "./config/certs/ca-cert.crt:/certs/ca.crt"
+      # on start run: keytool -import -trustcacerts -cacerts -storepass changeit -noprompt -alias meias -file /certs/ca.crt
