@@ -62,6 +62,7 @@ gradle-wrapper.properties
 
 # Ignore Gradle cache
 gradle/
+gradle.properties
 
 # Ignore generated output files
 app/build/
