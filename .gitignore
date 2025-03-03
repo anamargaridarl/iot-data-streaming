@@ -1,2 +1,2 @@
 wireshark/*
-config/certs/*
+infra/config/certs/*
