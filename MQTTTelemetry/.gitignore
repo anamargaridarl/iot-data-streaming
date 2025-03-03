@@ -5,6 +5,7 @@ build/
 
 # Ignore local configuration files
 local.properties
+gradle.properties
 .idea/
 *.iml
 
@@ -62,7 +63,6 @@ gradle-wrapper.properties
 
 # Ignore Gradle cache
 gradle/
-gradle.properties
 
 # Ignore generated output files
 app/build/
