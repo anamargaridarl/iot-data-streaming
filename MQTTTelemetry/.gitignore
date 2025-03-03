@@ -66,3 +66,6 @@ gradle/
 
 # Ignore generated output files
 app/build/
+
+#Ignore certificates
+app/src/main/res/raw/ca.pem
